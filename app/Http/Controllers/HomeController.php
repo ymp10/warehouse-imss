@@ -47,7 +47,7 @@ class HomeController extends Controller
         // Ambil semua id_pr dari DetailPr yang memiliki status 1
         $details = DetailPr::where('status', 1)->pluck('id_pr')->unique();
 
-         // Ambil purchase_request yang id-nya ada di dalam $details
+        // Ambil purchase_request yang id-nya ada di dalam $details
         $purchaseRequests = PurchaseRequest::join('kontrak', 'purchase_request.proyek_id', '=', 'kontrak.id')
             ->whereIn('purchase_request.id', $details)
             ->select('purchase_request.*', 'kontrak.nama_pekerjaan')
@@ -84,7 +84,7 @@ class HomeController extends Controller
                 'route' => 'div/logistik',
                 'bgcolor' => 'sagegreen',
                 'icon' => 'box',
-                'img' => asset('public/img/logistik.png')
+                'img' => asset('img/logistik.png')
 
             ],
             [
@@ -93,7 +93,7 @@ class HomeController extends Controller
                 'route' => 'div/wilayah1',
                 'bgcolor' => 'red',
                 'icon' => 'map-marker-alt',
-                'img' => asset('public/img/wilayah1.png')
+                'img' => asset('img/wilayah1.png')
             ],
 
             [
@@ -102,7 +102,7 @@ class HomeController extends Controller
                 'route' => 'div/wilayah2',
                 'bgcolor' => 'goldenrod',
                 'icon' => 'map',
-                'img' => asset('public/img/wilayah2.png')
+                'img' => asset('img/wilayah2.png')
             ],
 
 
@@ -111,7 +111,7 @@ class HomeController extends Controller
                 'route' => 'div/gudang',
                 'bgcolor' => 'blue',
                 'icon' => 'warehouse',
-                'img' => asset('public/img/warehouse.png')
+                'img' => asset('img/warehouse.png')
             ],
 
 
@@ -183,7 +183,6 @@ class HomeController extends Controller
                 ],
             ];
             $title = "Logistik";
-
         } else if ($type == "gudang") {
             $menus = [
                 // [
@@ -198,7 +197,7 @@ class HomeController extends Controller
                     'bgcolor' => 'orange',
                     'icon' => 'mail-bulk'
                 ],
-                
+
                 [
                     'name' => 'Stok Barang',
                     'route' => 'apps/products',
