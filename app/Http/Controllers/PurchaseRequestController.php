@@ -47,14 +47,14 @@ class PurchaseRequestController extends Controller
         $requests = PurchaseRequest::select('purchase_request.*', 'kontrak.nama_pekerjaan as proyek_name', 'kontrak.nomor_kontrak as dasar_pr')
             ->join('kontrak', 'kontrak.id', '=', 'purchase_request.proyek_id')
             ->orderBy('purchase_request.id', 'asc')
-            ->paginate(50);
+            ->paginate(10);
 
         $proyeks = DB::table('kontrak')->get();
         //  dd($requests);
 
 
         if ($search) {
-            $requests = PurchaseRequest::where('nama_pekerjaan', 'LIKE', "%$search%")->paginate(50);
+            $requests = PurchaseRequest::where('nama_pekerjaan', 'LIKE', "%$search%")->paginate(10);
         }
 
         if ($request->format == "json") {
