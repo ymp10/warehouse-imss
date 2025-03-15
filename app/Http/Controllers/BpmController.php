@@ -529,10 +529,12 @@ class BpmController extends Controller
         // Deteksi wilayah berdasarkan no_pr dengan regex dan case-insensitive
         if (preg_match('/wil1|wilayah1/i', $bpm->no_bpm)) {
             $bpm->role = "Wilayah 1";
-            $bpm->kabag = "RIKA K";
+            $bpm->kabag = "R Praja";
+            $bpm->kadep = "Rika K";
         } else {
             $bpm->role = "Wilayah 2";
-            $bpm->kabag = 'HARLISTA DWI O';
+            $bpm->kabag = 'Budiono';
+            $bpm->kadep = 'Harlista O';
         }
 
         $bpm->bpmes = DetailBpm::select('detail_bpm.*', 'bpm.*')

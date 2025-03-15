@@ -274,8 +274,9 @@
                     </td>
                     <td align="center" style="width: 25%;">
                         Diperiksa Oleh<br>
-                        Kadep. Rendal {{ $bpm->role }} <br>
+                        Kadep. {{ $bpm->role }} <br>
                         <br><br><br><br><br>
+                        <strong>{{ $bpm->kadep }}</strong><br>
                     </td>
                     <td align="center" style="width: 25%;">
                         Dibuat Oleh,<br>
