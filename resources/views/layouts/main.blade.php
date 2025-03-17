@@ -888,11 +888,14 @@
                                 $('#edit_pr_save').prop('disabled', true);
                             }
                             if (!value.id_spph && !value.nomor_spph) {
-                                status = 'Lakukan SPPH';
-                            } else if (value.id_spph && value.nomor_spph && !value.id_po) {
+                                status = 'Sedang proses SPPH';
+                            } else if (value.id_spph && value.nomor_spph && !value.id_nego) {
+                                status = 'PROSES NEGO';
+                            } else if (value.id_spph && value.nomor_spph && value.id_nego && !
+                                value.id_po) {
                                 status = 'PROSES PO';
-                            } else if (value.id_spph && value.nomor_spph && value
-                                .id_po && value.no_po) {
+                            } else if (value.id_spph && value.nomor_spph && value.id_nego &&
+                                value.id_po && value.no_po) {
                                 status = 'COMPLETED';
                             }
                             var date;

@@ -535,12 +535,20 @@ class PurchaseRequestController extends Controller
     public function hapusMultiplePr(Request $request)
     {
         if ($request->has('ids')) {
-            PurchaseRequest::whereIn('id', $request->input('ids'))->delete();
+            $ids = $request->input('ids');
+
+            // Hapus detail_pr terlebih dahulu
+            DetailPr::whereIn('id_pr', $ids)->delete();
+
+            // Hapus PurchaseRequest
+            PurchaseRequest::whereIn('id', $ids)->delete();
+
             return response()->json(['success' => true]);
         } else {
             return response()->json(['success' => false]);
         }
     }
+
 
     /**
      * Update the specified resource in storage.
