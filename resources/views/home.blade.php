@@ -272,6 +272,28 @@
                                 @endif
 
 
+                                {{-- SPPJP --}}
+                                @if (Auth::user()->role == 0 ||
+                                        Auth::user()->role == 2 ||
+                                        Auth::user()->role == 3 ||
+                                        Auth::user()->role == 8 ||
+                                        Auth::user()->role == 9)
+                                    <div class="col-lg-4 col-6">
+                                        <a href="{{ route('purchase_request_sppjp.index') }}">
+                                            <div class="small-box"
+                                                style="border-radius: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); max-width: 400px; max-height: 200px; overflow: hidden; display: block;">
+                                                <!-- Gambar sebagai background -->
+                                                <div style="position: relative;">
+                                                    <img src="public/img/pr.png" class="d-block w-100 img-fluid"
+                                                        height="200" width="400" alt="pr"
+                                                        style="object-fit: cover;">
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endif
+
+
 
 
 
