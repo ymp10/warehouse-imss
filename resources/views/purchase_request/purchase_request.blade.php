@@ -29,7 +29,7 @@
                 <div class="card-header">
 
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-pr"
-                        onclick="addPR()"><i class="fas fa-plus"></i> Add Purchase Request</button>
+                        onclick="addPR()"><i class="fas fa-plus"></i> Add PR / SPPJP</button>
                     <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#import-product" onclick="importProduct()"><i class="fas fa-file-excel"></i> Import Product (Excel)</button> -->
                     <!-- <button type="button" class="btn btn-primary" onclick="download('xls')"><i class="fas fa-file-excel"></i> Export Product (XLS)</button> -->
                     <div class="card-tools">
@@ -54,14 +54,14 @@
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="filter-pr-no">Filter Nomor PR</label>
+                                    <label for="filter-pr-no">Filter Nomor PR/SPPJP</label>
                                     <input type="text" class="form-control" id="filter-pr-no"
                                         placeholder="Masukkan Nomor pr">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="filter-pr-date">Filter Tanggal PR</label>
+                                    <label for="filter-pr-date">Filter Tanggal PR/SPPJP</label>
                                     <input type="date" class="form-control" id="filter-pr-date">
                                 </div>
                             </div>
@@ -76,7 +76,7 @@
                                 <tr class="text-center">
                                     <th><input type="checkbox" id="select-all"></th>
                                     {{-- <th>No.</th> --}}
-                                    <th>{{ __('Nomor PR') }}</th>
+                                    <th>{{ __('Nomor PR/SPPJP') }}</th>
                                     <th>{{ __('Proyek') }}</th>
                                     <th>{{ __('Tanggal') }}</th>
                                     <th>{{ __('Nomor Kontrak') }}</th>
@@ -276,7 +276,7 @@
                             @csrf
                             <input type="hidden" id="save_id" name="id">
                             <div class="form-group row">
-                                <label for="no_pr" class="col-sm-4 col-form-label">{{ __('Nomor PR') }} </label>
+                                <label for="no_pr" class="col-sm-4 col-form-label">{{ __('Nomor PR/SPPJP') }} </label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" id="no_pr" name="no_pr"
                                         autocomplete="off">
@@ -375,7 +375,7 @@
                                     </button>
                                     <table class="align-top w-100">
                                         <tr>
-                                            <td style="width: 3%;"><b>No PR</b></td>
+                                            <td style="width: 3%;"><b>No PR/SPPJP</b></td>
                                             <td style="width:2%">:</td>
                                             <td style="width: 55%"><span id="no_surat"></span></td>
                                         </tr>
