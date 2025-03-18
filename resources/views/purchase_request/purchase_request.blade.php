@@ -485,7 +485,7 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="pname"
-                                                        class="col-sm-4 col-form-label">{{ __('Nama Barang') }}</label>
+                                                        class="col-sm-4 col-form-label">{{ __('Uraian Barang/Jasa') }}</label>
                                                     <div class="col-sm-8">
                                                         <input type="text" class="form-control" id="pname">
                                                     </div>
