@@ -491,21 +491,43 @@ class PurchaseRequestController extends Controller
     //     return $pdf->stream('PR-' . $no . '.pdf');
     // }
 
+
+
+
+    public function cetakDokumen(Request $request)
+    {
+        $id = $request->id;
+        $jenis = $request->jenis_cetak;
+
+        if ($jenis === 'pr') {
+            return $this->cetakPr($request);
+        } elseif ($jenis === 'sppjp') {
+            return $this->cetakSppjp($request);
+        } else {
+            return abort(404);
+        }
+    }
+
     public function cetakPr(Request $request)
     {
         $id = $request->id;
         $pr = PurchaseRequest::where('purchase_request.id', $id)
             ->leftjoin('kontrak', 'kontrak.id', '=', 'purchase_request.proyek_id')->first();
 
+        if (!$pr) {
+            return abort(404);
+        }
+
         $pr->pic = User::where('id', $pr->id_user)->first()->name ?? '-';
 
-        // Deteksi wilayah berdasarkan no_pr dengan regex dan case-insensitive
         if (preg_match('/wil1|wilayah1/i', $pr->no_pr)) {
             $pr->role = "Wilayah 1";
             $pr->kadiv = "EKO PRASETYO";
+            $pr->kadep = "RIKA KUSUMANING INDRATMOKO";
         } else {
             $pr->role = "Wilayah 2";
             $pr->kadiv = 'HARI SUBEKTI';
+            $pr->kadep = "HARLISTA DWI OKTYASWORO";
         }
 
         $pr->purchases = DetailPR::select('detail_pr.*', 'purchase_request.*')
@@ -515,9 +537,44 @@ class PurchaseRequestController extends Controller
 
         $pdf = Pdf::loadview('purchase_request.pr_print', compact('pr'));
         $pdf->setPaper('A4', 'landscape');
-        $no = $pr->no_pr;
-        return $pdf->stream('PR-' . $no . '.pdf');
+        return $pdf->stream('PR-' . $pr->no_pr . '.pdf');
     }
+
+
+
+
+    public function cetakSppjp(Request $request)
+    {
+        $id = $request->id;
+        $sppjp = PurchaseRequest::where('purchase_request.id', $id)
+            ->leftjoin('kontrak', 'kontrak.id', '=', 'purchase_request.proyek_id')->first();
+
+        if (!$sppjp) {
+            return abort(404);
+        }
+
+        $sppjp->pic = User::where('id', $sppjp->id_user)->first()->name ?? '-';
+
+        if (preg_match('/wil1|wilayah1/i', $sppjp->no_pr)) {
+            $sppjp->role = "Wilayah 1";
+            $sppjp->kadiv = "EKO PRASETYO";
+            $sppjp->kadep = "RIKA KUSUMANING INDRATMOKO";
+        } else {
+            $sppjp->role = "Wilayah 2";
+            $sppjp->kadiv = 'HARI SUBEKTI';
+            $sppjp->kadep = "HARLISTA DWI OKTYASWORO";
+        }
+
+        $sppjp->purchases = DetailPR::select('detail_pr.*', 'purchase_request.*')
+            ->leftjoin('purchase_request', 'purchase_request.id', '=', 'detail_pr.id_pr')
+            ->where('purchase_request.id', $id)
+            ->get();
+
+        $pdf = Pdf::loadview('purchase_request.sppjp_print', compact('sppjp'));
+        $pdf->setPaper('A4', 'landscape');
+        return $pdf->stream('PR-' . $sppjp->no_pr . '.pdf');
+    }
+
 
 
     /**
@@ -640,12 +697,12 @@ class PurchaseRequestController extends Controller
     //edit detail
     public function editDetail(Request $request)
     {
-        if (!$request->stock) {
-            return response()->json([
-                'success' => false,
-                'message' => 'QTY tidak boleh kosong'
-            ]);
-        }
+        // if (!$request->stock) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'QTY tidak boleh kosong'
+        //     ]);
+        // }
         $request->validate([
             'lampiran' => 'nullable',
             // 'lampiran' => 'nullable|file|mimes:pdf|max:500',
@@ -665,8 +722,8 @@ class PurchaseRequestController extends Controller
             'id_pr' => 'required', // Pastikan id_sr wajib ada
             // 'id' => 'required',
             'kode_material' => 'nullable',
-            'uraian' => 'required',
-            'spek' => 'required',
+            'uraian' => 'nullable',
+            'spek' => 'nullable',
             'qty' => 'nullable',
             'satuan' => 'nullable',
             'waktu' => 'nullable',
@@ -727,12 +784,12 @@ class PurchaseRequestController extends Controller
 
     public function updateDetailPr(Request $request)
     {
-        if (!$request->stock) {
-            return response()->json([
-                'success' => false,
-                'message' => 'QTY tidak boleh kosong'
-            ]);
-        }
+        // if (!$request->stock) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'QTY tidak boleh kosong'
+        //     ]);
+        // }
         $request->validate([
             'lampiran' => 'nullable',
             // 'lampiran' => 'nullable|file|mimes:pdf|max:500',
@@ -752,20 +809,15 @@ class PurchaseRequestController extends Controller
         $insert = DetailPR::create([
             'id_pr' => $request->id_pr,
             'id_proyek' => $request->id_proyek,
-            'kode_material' => $request->kode_material,
-            'uraian' => $request->uraian,
-            'spek' => $request->spek,
-            'satuan' => $request->satuan,
-            'qty' => $request->stock,
-            // 'qty_spph' => $request->stock,
-            // 'qty_loi' => $request->stock,
-            // 'qty_nego' => $request->stock,
-            // 'qty_po' => $request->stock,
-            // 'qty2' => $request->stock,
-            'waktu' => $request->waktu,
-            'keterangan' => $request->keterangan,
-            'lampiran' => $fileName,
-            'id_del' => $idDel,  // Menggunakan id_del yang baru dihitung
+            'kode_material' => $request->kode_material ?: '-',
+            'uraian' => $request->uraian ?: '-',
+            'spek' => $request->spek ?: '-',
+            'satuan' => $request->satuan ?: '-',
+            'qty' => $request->stock ?: 0,
+            'waktu' => $request->waktu ?: '-',
+            'keterangan' => $request->keterangan ?: '-',
+            'lampiran' => $fileName ?: null,
+            'id_del' => $idDel,
         ]);
 
         if (!$insert) {

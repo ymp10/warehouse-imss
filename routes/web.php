@@ -129,7 +129,7 @@ Route::prefix('products')->group(function () {
     Route::post('po-imss/hapus-multiple', [App\Http\Controllers\PurchaseOrderController::class, 'hapusMultiplePo'])->name('hapus-multiple');
     Route::post('tracking-imss/hapus-multiple', [App\Http\Controllers\PurchaseOrderController::class, 'hapusMultipleTracking'])->name('hapus-multiple');
     Route::get('/nopr/getByIds', [App\Http\Controllers\PurchaseOrderController::class, 'getByIds'])->name('nopr.getByIds');
-
+    Route::post('qty_po_save', [App\Http\Controllers\PurchaseOrderController::class, 'QtyPoSave'])->name('qty_po_save');
 
     Route::get('test_pr', [App\Http\Controllers\PurchaseOrderController::class, 'test_pr'])->name('test_pr');
 
@@ -146,6 +146,7 @@ Route::prefix('products')->group(function () {
     //purchase request
     Route::resource('purchase_request', App\Http\Controllers\PurchaseRequestController::class)->except(['destroy']);
     Route::get('cetak_pr', [App\Http\Controllers\PurchaseRequestController::class, 'cetakPr'])->name('cetak_pr');
+    Route::get('cetak_sppjp', [App\Http\Controllers\PurchaseRequestController::class, 'cetakSppjp'])->name('cetak_sppjp');
     Route::delete('purchase_request', [App\Http\Controllers\PurchaseRequestController::class, 'destroy'])->name('purchase_request.destroy');
     Route::post('detail_purchase_request/{id}/delete', [PurchaseRequestController::class, 'hapusDetail'])->name('detail_purchase_request.delete');
     Route::post('pr-imss/hapus-multiple', [App\Http\Controllers\PurchaseRequestController::class, 'hapusMultiplePr'])->name('hapus-multiple');
@@ -159,27 +160,10 @@ Route::prefix('products')->group(function () {
     Route::get('/purchase-requests', [App\Http\Controllers\PurchaseRequestController::class, 'indexPr'])->middleware('auth');
     Route::get('products/purchase_request_detail/completed/{id}', [App\Http\Controllers\PurchaseRequestController::class, 'getCompletedDetailPr'])->name('get.completed.pr');
     Route::get('lppb_detail/{id}', [App\Http\Controllers\PurchaseRequestController::class, 'getDetailLppb'])->name('lppb_detail');
-    Route::post('qty_po_save', [App\Http\Controllers\PurchaseOrderController::class, 'QtyPoSave'])->name('qty_po_save');
+    Route::get('/cetak-dokumen', [App\Http\Controllers\PurchaseRequestController::class, 'cetakDokumen'])->name('cetak_dokumen');
 
 
-
-    //purchase request sppjp
-    Route::resource('purchase_request_sppjp', App\Http\Controllers\PurchaseRequestSppjpController::class)->except(['destroy']);
-    Route::get('cetak_pr_sppjp', [App\Http\Controllers\PurchaseRequestSppjpController::class, 'cetakPr'])->name('cetak_pr_sppjp');
-    Route::delete('purchase_request_sppjp', [App\Http\Controllers\PurchaseRequestSppjpController::class, 'destroy'])->name('purchase_request_sppjp.destroy');
-    Route::post('detail_purchase_request_sppjp/{id}/delete', [PurchaseRequestSppjpController::class, 'hapusDetail'])->name('detail_purchase_request_sppjp.delete');
-    Route::post('pr-sppjp-imss/hapus-multiple', [App\Http\Controllers\PurchaseRequestSppjpController::class, 'hapusMultiplePr'])->name('hapus-multiple-sppjp');
-    Route::get('purchase_request_detail_sppjp/{id}', [App\Http\Controllers\PurchaseRequestSppjpController::class, 'getDetailPrSppjp'])->name('purchase_request_detail_sppjp');
-    Route::get('penerimaan_barang_detail_sppjp/{id}', [App\Http\Controllers\PurchaseRequestSppjpController::class, 'getDetailBarang'])->name('penerimaan_barang_detail_sppjp');
-    Route::post('update_purchase_request_detail_sppjp', [App\Http\Controllers\PurchaseRequestSppjpController::class, 'updateDetailPr'])->name('purchase_request_detail_sppjp.update');
-    Route::post('purchase_request_sppjp/update_detail', [App\Http\Controllers\PurchaseRequestSppjpController::class, 'editDetail'])->name('detail.update-sppjp'); //nambah baru
-    Route::delete('pr-sppjp/delete_detail', [App\Http\Controllers\PurchaseRequestSppjpController::class, 'deleteDetail'])->name('purchase_request_sppjp.delete_detail');
-    Route::post('lppb/editlppb', [App\Http\Controllers\PurchaseRequestSppjpController::class, 'editlppb'])->name('lppb.update'); //nambah baru
-    Route::post('lppb/editpenerimaan', [App\Http\Controllers\PurchaseRequestSppjpController::class, 'editpenerimaan'])->name('lppb.update'); //nambah baru
-    Route::get('/purchase-requests-sppjp', [App\Http\Controllers\PurchaseRequestSppjpController::class, 'indexPr'])->middleware('auth');
-    Route::get('products/purchase_request_detail_sppjp/completed/{id}', [App\Http\Controllers\PurchaseRequestSppjpController::class, 'getCompletedDetailPrSppjp'])->name('get.completed.prsppjp');
-    Route::get('lppb_detail/{id}', [App\Http\Controllers\PurchaseRequestSppjpController::class, 'getDetailLppb'])->name('lppb_detail');
-    Route::post('pr_sppjp', [App\Http\Controllers\PurchaseRequestSppjpController::class, 'store'])->name('products.pr_sppjp.store');
+    
 
     
 

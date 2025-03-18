@@ -273,7 +273,7 @@
 
 
                                 {{-- SPPJP --}}
-                                @if (Auth::user()->role == 0 ||
+                                {{-- @if (Auth::user()->role == 0 ||
                                         Auth::user()->role == 2 ||
                                         Auth::user()->role == 3 ||
                                         Auth::user()->role == 8 ||
@@ -291,7 +291,7 @@
                                             </div>
                                         </a>
                                     </div>
-                                @endif
+                                @endif --}}
 
 
 

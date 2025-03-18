@@ -128,16 +128,17 @@
     <header>
         <div class="information">
             <table width="100%">
-                <tr width="100%">
-                    <td align="left" style="width: 25%;">
+                <tr style="border: 1px solid black;">
+                    <td align="left" style="width: 25%; border: 1px solid black;">
                         <img src="https://inkamultisolusi.co.id/api_cms/public/uploads/editor/20220511071342_LSnL6WiOy67Xd9mKGDaG.png"
                             alt="Logo" width="150" class="logo" /><br>
                     </td>
 
-                    <td align="center" style="width: 75%;">
-                        <br><strong style="font-size: 25">PURCHASE REQUEST</strong><br>
-                        <strong style="font-size: 25">(PR)</strong><br>
+                    <td align="center" style="width: 85%; border-style: none;">
+                        <br><strong style="font-size: 15">PURCHASE REQUEST</strong><br>
+                        <strong style="font-size: 15">(PR)</strong><br>
                     </td>
+                    <td style= "border-style:none"></td>
                 </tr>
                 <tr>
                     <td align="left" style="width: 25%;">
@@ -153,14 +154,11 @@
                             {{-- <strong>Tanggal* : <span>{{ $pr->tgl_pr }}</span></strong><br> --}}
                             <span>
                                 @if ($pr['tgl_pr'])
-                                    <?php
-                                    $date = new DateTime($pr['tgl_pr']);
-                                    echo $date->format('d F Y');
-                                    ?>
+                                    {{ \Carbon\Carbon::parse($pr['tgl_pr'])->translatedFormat('d F Y') }}
                                 @else
                                     -
                                 @endif
-                            </span></strong><br>
+                            </span>
                     </td>
 
                     <td align="right" style="width: 35%;">
@@ -225,10 +223,7 @@
                 {{-- <td>{{ $item->waktu }}</td> --}}
                 <td>
                     @if ($item['waktu'])
-                        <?php
-                        $date = new DateTime($item['waktu']);
-                        echo $date->format('d F Y');
-                        ?>
+                        {{ \Carbon\Carbon::parse($item['waktu'])->locale('id')->translatedFormat('d F Y') }}
                     @else
                         -
                     @endif
@@ -257,8 +252,9 @@
                     </td>
                     <td align="center" style="width: 25%;">
                         Diperiksa Oleh<br>
-                        Kadep.  {{ $pr->role }} <br>
-                        <br><br><br><br><br>
+                        Kadep. {{ $pr->role }} <br>
+                        <br><br><br><br>
+                        <strong>{{ $pr->kadep }}</strong><br>
                     </td>
                     <td align="center" style="width: 25%;">
                         Dibuat Oleh,<br>

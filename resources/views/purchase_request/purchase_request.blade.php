@@ -359,12 +359,20 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="row">
-                                <form id="cetak-pr" method="GET" action="{{ route('cetak_pr') }}" target="_blank">
-                                    <input type="hidden" name="id" id="id">
-                                </form>
+                                
+                                
                                 <div class="col-12" id="container-form">
-                                    <button id="button-cetak-pr" type="button" class="btn btn-primary"
-                                        onclick="document.getElementById('cetak-pr').submit();">{{ __('Cetak') }}</button>
+                                    <b>Pilih PR / SPPJP</b>
+                                    <form id="cetak-form" method="GET" action="" target="_blank">
+                                        <input type="hidden" name="id" id="id">
+                                        <select name="jenis_cetak" id="jenis_cetak" class="form-control">
+                                            <option value="pr">Cetak PR</option>
+                                            <option value="sppjp">Cetak SPPJP</option>
+                                        </select>
+                                    </form>
+                                    <button id="button-cetak" type="button" class="btn btn-primary" onclick="submitCetak();">
+                                        {{ __('Cetak') }}
+                                    </button>
                                     <table class="align-top w-100">
                                         <tr>
                                             <td style="width: 3%;"><b>No PR</b></td>
@@ -583,6 +591,22 @@
     <script src="/plugins/select2/js/select2.full.min.js"></script>
     <script src="/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+    <script>
+        function submitCetak() {
+            let jenisCetak = document.getElementById("jenis_cetak").value;
+            let form = document.getElementById("cetak-form");
+    
+            if (jenisCetak === "pr") {
+                form.action = "{{ route('cetak_pr') }}";
+            } else if (jenisCetak === "sppjp") {
+                form.action = "{{ route('cetak_sppjp') }}";
+            }
+    
+            form.submit();
+        }
+    </script>
 
     {{-- Menampilkan form otomatis Dasar Proyek --}}
     <script>

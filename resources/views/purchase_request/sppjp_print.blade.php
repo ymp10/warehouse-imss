@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Purchase Request-{{ $pr->no_pr }}</title>
+    <title>SPPJP-{{ $sppjp->no_pr }}</title>
     <style>
         @page {
             margin: 0cm;
@@ -128,17 +128,20 @@
     <header>
         <div class="information">
             <table width="100%">
-                <tr width="100%">
-                    <td align="left" style="width: 25%;">
+                <tr style="border: 1px solid black;">
+                    <td align="left" style="width: 25%; border: 1px solid black;">
                         <img src="https://inkamultisolusi.co.id/api_cms/public/uploads/editor/20220511071342_LSnL6WiOy67Xd9mKGDaG.png"
                             alt="Logo" width="150" class="logo" /><br>
                     </td>
 
-                    <td align="center" style="width: 75%;">
-                        <br><strong style="font-size: 25">PURCHASE REQUEST</strong><br>
-                        <strong style="font-size: 25">(PR)</strong><br>
+                    <td align="center" style="width: 85%; border-style: none;">
+                        <br><strong style="font-size: 13">SURAT PERMINTAAN PEMBELIAN JASA / PEMBORONGAN</strong><br>
+                        <strong style="font-size: 13">(SPPJ/P)</strong><br>
                     </td>
+                    <td style= "border-style:none"></td>
+
                 </tr>
+
                 <tr>
                     <td align="left" style="width: 25%;">
                         <br><br>
@@ -148,24 +151,22 @@
 
                     <td align="center">
                         <br><br>
-                        <strong>&nbsp;&nbsp;&nbsp;Nomor* : <span>{{ $pr->no_pr }}</span></strong><br>
+                        <strong>&nbsp;&nbsp;&nbsp;Nomor* : <span>{{ $sppjp->no_pr }}</span></strong><br>
                         <strong>Tanggal* :
                             {{-- <strong>Tanggal* : <span>{{ $pr->tgl_pr }}</span></strong><br> --}}
                             <span>
-                                @if ($pr['tgl_pr'])
-                                    <?php
-                                    $date = new DateTime($pr['tgl_pr']);
-                                    echo $date->format('d F Y');
-                                    ?>
+                                @if ($sppjp['tgl_pr'])
+                                    {{ \Carbon\Carbon::parse($sppjp['tgl_pr'])->translatedFormat('d F Y') }}
                                 @else
                                     -
                                 @endif
-                            </span></strong><br>
+                            </span>
+
                     </td>
 
                     <td align="right" style="width: 35%;">
                         <br><br>
-                        <strong>Proyek : <span>{{ $pr->nama_pekerjaan }}</span></strong><br>
+                        <strong>Proyek : <span>{{ $sppjp->nama_pekerjaan }}</span></strong><br>
                     </td>
                 </tr>
             </table>
@@ -190,7 +191,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($pr->purchases as $item)
+            @forelse ($sppjp->purchases as $item)
                 @if ($loop->index % 8 == 0 && $loop->index != 0)
         </tbody>
     </table>
@@ -225,13 +226,11 @@
                 {{-- <td>{{ $item->waktu }}</td> --}}
                 <td>
                     @if ($item['waktu'])
-                        <?php
-                        $date = new DateTime($item['waktu']);
-                        echo $date->format('d F Y');
-                        ?>
+                        {{ \Carbon\Carbon::parse($item['waktu'])->locale('id')->translatedFormat('d F Y') }}
                     @else
                         -
                     @endif
+
                 </td>
                 <td
                     style="word-wrap: break-word; max-width: 200px; overflow: hidden; text-overflow: ellipsis; text-align: left;">
@@ -251,20 +250,21 @@
                 <tr>
                     <td align="center" style="width: 25%;">
                         Menyetujui,<br>
-                        Kadiv. {{ $pr->role }}
+                        Kadiv. {{ $sppjp->role }}
                         <br><br><br><br><br>
-                        <strong>{{ $pr->kadiv }}</strong><br>
+                        <strong>{{ $sppjp->kadiv }}</strong><br>
                     </td>
                     <td align="center" style="width: 25%;">
                         Diperiksa Oleh<br>
-                        Kadep.  {{ $pr->role }} <br>
-                        <br><br><br><br><br>
+                        Kadep. {{ $sppjp->role }} <br>
+                        <br><br><br><br>
+                        <strong>{{ $sppjp->kadep }}</strong><br>
                     </td>
                     <td align="center" style="width: 25%;">
                         Dibuat Oleh,<br>
-                        Staff {{ $pr->role }}
+                        Staff {{ $sppjp->role }}
                         <br><br><br><br><br>
-                        <strong>{{ $pr->pic }}</strong><br>
+                        <strong>{{ $sppjp->pic }}</strong><br>
                     </td>
                 </tr>
             </table>
@@ -275,8 +275,8 @@
     <table class="table2" style="width:100%; margin-top:2rem">
         <tr>
             <td>
-                <strong><u>DASAR PR :</u></strong><br>
-                <span>{!! nl2br($pr->dasar_pr) !!}</span>
+                <strong><u>DASAR SPPJP :</u></strong><br>
+                <span>{!! nl2br($sppjp->dasar_pr) !!}</span>
 
             </td>
         </tr>
