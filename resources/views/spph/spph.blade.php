@@ -1216,7 +1216,7 @@
                             '<td>' + checkbox + '</td>' +
                             '<td>' + value.uraian + '</td>' +
                             '<td>' + value.spek + '</td>' +
-                            '<td data-original-qty="' + value.qty_spph + '">' + value.qty_spph +
+                            '<td data-original-qty="' + value.qty + '">' + value.qty +
                             '</td>' +
                             '<td>' +
                             '<div style="display: block;">' +
