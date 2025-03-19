@@ -674,6 +674,9 @@ class NegoController extends Controller
             $item->pr_no = PurchaseRequest::where('id', $item->id_pr)->first()->no_pr ?? '';
             $item->po_no = Purchase_Order::where('id', $item->id_po)->first()->no_po ?? '';
             $item->nama_pekerjaan = Kontrak::where('id', $item->id_proyek)->first()->nama_pekerjaan ?? '';
+
+            // Baru, hitung sisa Nego by QTY asli - jumlah di DetailNego by id_pr_detail
+            $item->qty_nego = $item->qty - DetailNego::where('id_detail_pr', $item->id)->sum('nego_qty');
             return $item;
         });
 
