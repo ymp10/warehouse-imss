@@ -1187,7 +1187,7 @@
                         '<td>' + checkbox + '</td>' +
                         '<td>' + value.uraian + '</td>' +
                         '<td>' + value.spek + '</td>' +
-                        '<td data-original-qty="' + value.qty + '">' + value.qty + 
+                        '<td data-original-qty="' + value.qty_nego + '">' + value.qty_nego + 
                         // '<td><input type="text" class="form-control qty_nego1-input" style="width: 50px;" value="' + value.qty_nego1 + '" data-qty="' + value.qty_nego1 + '"></td>' +
                         '<td>' +
         '<div style="display: block;">' +  // Menggunakan block untuk menata vertikal
