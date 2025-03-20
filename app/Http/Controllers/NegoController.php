@@ -285,7 +285,7 @@ class NegoController extends Controller
         ]);
     
         foreach ($request->data as $item) {
-            $negoDetail = DetailNego::where('id_pr_detail',$item['id'])->first();
+            $negoDetail = DetailNego::where('id_detail_pr',$item['id'])->first();
     
             if (!$negoDetail) continue;
     
