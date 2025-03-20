@@ -285,19 +285,26 @@ class NegoController extends Controller
         ]);
     
         foreach ($request->data as $item) {
-            $negoDetail = DetailNego::where('id_detail_pr',$item['id'])->first();
+            $negoDetail = DetailPR::find($item['id']);
     
             if (!$negoDetail) continue;
     
             // Pastikan qty2 tidak lebih besar dari qty_spph
-            if ($negoDetail->nego_qty > $item['qty_nego1']) {
+            if ($negoDetail->qty > $item['qty_nego1']) {
                 return response()->json(['error' => 'Qty2 tidak boleh lebih besar dari Qty1'], 400);
             }
     
             // Update data
-            $negoDetail->qty_nego -= $item['qty_nego1'];
-            $negoDetail->qty_nego1 = $item['qty_nego1'];
-            $negoDetail->save();
+            // $negoDetail->qty_nego -= $item['qty_nego1'];
+            // $negoDetail->qty_nego1 = $item['qty_nego1'];
+            // $negoDetail->save();
+
+            $detailNego = DetailNego::create([
+                'nego_id' => $item['nego_id'],
+                'id_detail_pr' => $item['id'],
+                'nego_qty' => $item['qty_nego1'],
+                'id_del_nego' => 0,
+            ]);
         }
     
         return response()->json(['success' => true]);
@@ -772,50 +779,50 @@ public function tambahNegoDetail(Request $request)
     $selected = $request->selected_id;
 
     // Cek jika selected_id kosong
-    if (empty($selected)) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Pilih barang terlebih dahulu'
-        ]);
-    }
+    // if (empty($selected)) {
+    //     return response()->json([
+    //         'success' => false,
+    //         'message' => 'Pilih barang terlebih dahulu'
+    //     ]);
+    // }
 
-    foreach ($selected as $key => $value) {
-        $id_barang = $value;
-        // Temukan DetailPR berdasarkan ID
-        $detailPr = DetailPR::find($value);
+    // foreach ($selected as $key => $value) {
+    //     $id_barang = $value;
+    //     // Temukan DetailPR berdasarkan ID
+    //     $detailPr = DetailPR::find($value);
 
         
 
-        // Dapatkan nilai qty_nego1 dan id_del
-        $qty_nego1 = $detailPr->qty_nego1;
-        $id_del = $detailPr->id_del;
+    //     // Dapatkan nilai qty_nego1 dan id_del
+    //     $qty_nego1 = $detailPr->qty_nego1;
+    //     $id_del = $detailPr->id_del;
 
-        // Tambahkan data ke tabel DetailNego
-        $detailNego = DetailNego::create([
-            'nego_id' => $id,
-            'id_detail_pr' => $id_barang,
-            // Gunakan $value untuk id_detail_pr
-            'nego_qty' => $qty_nego1,  // Masukkan qty_nego1 ke kolom qty_spph
-            'id_del_nego' => $id_del,
-        ]);
+    //     // Tambahkan data ke tabel DetailNego
+    //     $detailNego = DetailNego::create([
+    //         'nego_id' => $id,
+    //         'id_detail_pr' => $id_barang,
+    //         // Gunakan $value untuk id_detail_pr
+    //         'nego_qty' => $qty_nego1,  // Masukkan qty_nego1 ke kolom qty_spph
+    //         'id_del_nego' => $id_del,
+    //     ]);
 
-        // Update status dan qty_nego1 pada DetailPR
-        $update = DetailPR::where('id', $value)->update([
-            'status' => 2,
-            'qty_nego1' => null,  // Set qty_nego1 menjadi null
-            'id_nego' => $id,
-        ]);
+    //     // Update status dan qty_nego1 pada DetailPR
+    //     $update = DetailPR::where('id', $value)->update([
+    //         'status' => 2,
+    //         'qty_nego1' => null,  // Set qty_nego1 menjadi null
+    //         'id_nego' => $id,
+    //     ]);
 
-        // Tambahkan id_nego jika qty_nego bernilai 0
-        if ($detailPr->qty_nego == 0) {
-            $updateData = [
-                'id_nego' => $id
-            ];
+    //     // Tambahkan id_nego jika qty_nego bernilai 0
+    //     if ($detailPr->qty_nego == 0) {
+    //         $updateData = [
+    //             'id_nego' => $id
+    //         ];
 
-            // Lakukan update pada DetailPR
-            DetailPR::where('id', $value)->update($updateData);
-        }
-    }
+    //         // Lakukan update pada DetailPR
+    //         DetailPR::where('id', $value)->update($updateData);
+    //     }
+    // }
 
     // Cek jika Nego tidak ditemukan
     $nego = Nego::find($id);
