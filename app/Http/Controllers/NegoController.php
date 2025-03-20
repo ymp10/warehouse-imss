@@ -290,7 +290,7 @@ class NegoController extends Controller
             if (!$negoDetail) continue;
     
             // Pastikan qty2 tidak lebih besar dari qty_spph
-            if ($negoDetail->qty > $item['qty_nego1']) {
+            if ($negoDetail->qty < $item['qty_nego1']) {
                 return response()->json(['error' => 'Qty2 tidak boleh lebih besar dari Qty1'], 400);
             }
     
