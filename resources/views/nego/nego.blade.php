@@ -1143,7 +1143,7 @@
     $('#button-check').prop("disabled", true);
 
     $.ajax({
-        url: "{{ url('products/products_pr/') }}/" + id_pr,
+        url: "{{ url('products/products_pr_nego/') }}/" + id_pr,
         type: "GET",
         data: {
             "format": "json"
