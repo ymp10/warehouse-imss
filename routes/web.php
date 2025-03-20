@@ -132,6 +132,7 @@ Route::prefix('products')->group(function () {
     Route::post('qty_po_save', [App\Http\Controllers\PurchaseOrderController::class, 'QtyPoSave'])->name('qty_po_save');
 
     Route::get('test_pr', [App\Http\Controllers\PurchaseOrderController::class, 'test_pr'])->name('test_pr');
+    Route::get('products_pr_po/{id_pr}', [App\Http\Controllers\PurchaseOrderController::class, 'getProductPR'])->name('products_pr_po');
 
     //justifikasi
     Route::get('justifikasi', [App\Http\Controllers\JustifikasiController::class, 'index'])->name('product.justifikasi');

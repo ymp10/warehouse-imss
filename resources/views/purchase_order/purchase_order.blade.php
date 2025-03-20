@@ -420,7 +420,7 @@
                                 <div id="form" class="card">
                                     <div class="card-body">
                                         <!-- <button type="button" class="btn btn-primary mb-3"
-                                                onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                    onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                         <button id="btn-save-then-add" type="button" class="btn btn-primary mb-3">Tambah
                                             Pilihan</button>
 
@@ -1481,15 +1481,30 @@
                 var qty_po1 = $row.find('.qty_po1-input').val();
                 var isChecked = $row.find('.row-checkbox').prop('checked'); // Cek checkbox
 
+                // if (isChecked) {
+                //     selectedRows++; // Hitung jumlah yang dicentang
+                //     if (qty_po1 !== '' && !isNaN(qty_po1)) { // Pastikan qty2 valid
+                //         dataToSend.push({
+                //             id: id,
+                //             qty_po1: qty_po1
+                //         });
+                //     }
+                // }
+
                 if (isChecked) {
                     selectedRows++; // Hitung jumlah yang dicentang
                     if (qty_po1 !== '' && !isNaN(qty_po1)) { // Pastikan qty2 valid
                         dataToSend.push({
                             id: id,
-                            qty_po1: qty_po1
+                            qty_po1: qty_po1,
+                            id_po: $('#id_po').val()
                         });
                     }
                 }
+
+
+
+
             });
 
             if (selectedRows === 0) { // Jika tidak ada checkbox yang dicentang
@@ -1551,7 +1566,7 @@
                             var $row = $(this);
                             if ($row.find('.row-checkbox').prop('checked')) {
                                 $row.find('.row-checkbox').prop('disabled',
-                                true); // Tidak bisa dicentang ulang
+                                    true); // Tidak bisa dicentang ulang
                             }
                         });
 
@@ -1594,7 +1609,7 @@
 
             $('#button-check').prop("disabled", true);
             $.ajax({
-                url: "{{ url('products/products_pr/') }}/" + pr_id,
+                url: "{{ url('products/products_pr_po/') }}/" + pr_id,
                 type: "GET",
                 data: {
                     "format": "json"

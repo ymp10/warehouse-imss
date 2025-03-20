@@ -6,9 +6,11 @@ use App\Models\DetailPo;
 use App\Models\DetailPR;
 use App\Models\Keproyekan;
 use App\Models\Kontrak;
+use App\Models\Nego;
 use App\Models\Proyek;
 use App\Models\Purchase_Order;
 use App\Models\PurchaseRequest;
+use App\Models\Spph;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -426,14 +428,21 @@ class PurchaseOrderController extends Controller
             if (!$poDetail) continue;
 
             // Pastikan qty2 tidak lebih besar dari qty_spph
-            if ($poDetail->qty_spph < $item['qty_po1']) {
+            if ($poDetail->qty < $item['qty_po1']) {
                 return response()->json(['error' => 'Qty tidak boleh lebih besar dari Qty1'], 400);
             }
 
             // Update data
-            $poDetail->qty_po -= $item['qty_po1'];
-            $poDetail->qty_po1 = $item['qty_po1'];
-            $poDetail->save();
+            // $poDetail->qty_po -= $item['qty_po1'];
+            // $poDetail->qty_po1 = $item['qty_po1'];
+            // $poDetail->save();
+
+            $detailPo = DetailPo::create([
+                'id_po' => $item['id_po'],
+                'id_detail_pr' => $item['id'],
+                'po_qty' => $item['qty_po1'],
+                'id_del_po' => 0,
+            ]);
         }
 
         return response()->json(['success' => true]);
@@ -1104,6 +1113,48 @@ class PurchaseOrderController extends Controller
     }
 
 
+    
 
+
+    //End Detail Product
+
+
+    //Detail Product
+    public function getProductPR(Request $request)
+    {
+        // dd($request);
+        $id_pr = $request->id_pr; // Ambil id_pr dari request
+        $proyek = strtolower($request->proyek);
+
+        // Ambil DetailPR yang sesuai dengan id_pr
+        $products = DetailPR::where('id_pr', $id_pr)->get();
+
+
+        // Proses setiap produk
+        $products = $products->map(function ($item) {
+            $item->spek = $item->spek ? $item->spek : '';
+            $item->keterangan = $item->keterangan ? $item->keterangan : '';
+            $item->kode_material = $item->kode_material ? $item->kode_material : '';
+            $item->nomor_nego = Nego::where('id', $item->id_nego)->first()->nomor_nego ?? '';
+            $item->nomor_spph = Spph::where('id', $item->spph_id)->first()->nomor_spph ?? '';
+            $item->pr_no = PurchaseRequest::where('id', $item->id_pr)->first()->no_pr ?? '';
+            $item->po_no = Purchase_Order::where('id', $item->id_po)->first()->no_po ?? '';
+            $item->nama_pekerjaan = Kontrak::where('id', $item->id_proyek)->first()->nama_pekerjaan ?? '';
+
+            // Baru, hitung sisa Nego by QTY asli - jumlah di DetailNego by id_pr_detail
+            $item->qty_po = $item->qty - DetailPo::where('id_detail_pr', $item->id)->sum('po_qty');
+            return $item;
+        });
+
+        // Filter produk berdasarkan nama proyek
+        $products = $products->filter(function ($item) use ($proyek) {
+            return strpos(strtolower($item->nama_pekerjaan), $proyek) !== false;
+        });
+
+        // Kembalikan hasil dalam bentuk JSON
+        return response()->json([
+            'products' => $products
+        ]);
+    }
     //End Detail Product
 }
