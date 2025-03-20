@@ -360,30 +360,30 @@ class PurchaseOrderController extends Controller
         $id = $request->id_po;
         $selected = $request->selected;
 
-        foreach ($selected as $key => $value) {
-            // Ambil data dari DetailPR
-            $detail_pr = DetailPR::find($value);
+        // foreach ($selected as $key => $value) {
+        //     // Ambil data dari DetailPR
+        //     $detail_pr = DetailPR::find($value);
 
-            // Ambil data dari DetailPo berdasarkan id_detail_pr
-            $detail_po = DetailPo::where('id_detail_pr', $value)->first();
+        //     // Ambil data dari DetailPo berdasarkan id_detail_pr
+        //     $detail_po = DetailPo::where('id_detail_pr', $value)->first();
 
-            // Update status dan id_po di tabel DetailPR
-            $update = DetailPR::where('id', $value)->update([
-                'id_po' => $id,
-                'status' => 3,
-                'qty_po1' => null,
-            ]);
-            $id_del = $detail_pr->id_del;
-            // Create record baru di DetailPo dan kirimkan qty_po1 ke po_qty
-            $add = DetailPo::create([
-                'id_po' => $id,
-                'id_pr' => $detail_pr->id_pr,
-                'id_detail_pr' => $detail_pr->id,
-                'po_qty' => $detail_pr->qty_po1,  // Menambahkan qty_po1 dari DetailPR ke po_qty di DetailPo
-                'id_del_po' => $id_del,
+        //     // Update status dan id_po di tabel DetailPR
+        //     $update = DetailPR::where('id', $value)->update([
+        //         'id_po' => $id,
+        //         'status' => 3,
+        //         'qty_po1' => null,
+        //     ]);
+        //     $id_del = $detail_pr->id_del;
+        //     // Create record baru di DetailPo dan kirimkan qty_po1 ke po_qty
+        //     $add = DetailPo::create([
+        //         'id_po' => $id,
+        //         'id_pr' => $detail_pr->id_pr,
+        //         'id_detail_pr' => $detail_pr->id,
+        //         'po_qty' => $detail_pr->qty_po1,  // Menambahkan qty_po1 dari DetailPR ke po_qty di DetailPo
+        //         'id_del_po' => $id_del,
 
-            ]);
-        }
+        //     ]);
+        // }
 
 
         // Fetch the updated purchase order data
