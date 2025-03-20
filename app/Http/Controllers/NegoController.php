@@ -285,12 +285,12 @@ class NegoController extends Controller
         ]);
     
         foreach ($request->data as $item) {
-            $negoDetail = DetailPR::find($item['id']);
+            $negoDetail = DetailNego::where('id_pr_detail',$item['id'])->first();
     
             if (!$negoDetail) continue;
     
             // Pastikan qty2 tidak lebih besar dari qty_spph
-            if ($negoDetail->qty_nego < $item['qty_nego1']) {
+            if ($negoDetail->nego_qty > $item['qty_nego1']) {
                 return response()->json(['error' => 'Qty2 tidak boleh lebih besar dari Qty1'], 400);
             }
     
