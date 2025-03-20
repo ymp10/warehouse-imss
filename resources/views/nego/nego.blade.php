@@ -1764,7 +1764,7 @@ $('#btn-save-then-add').on('click', function() {
         if (isChecked) { 
             selectedRows++; // Hitung jumlah yang dicentang
             if (qty_nego1 !== '' && !isNaN(qty_nego1)) { // Pastikan qty2 valid
-                dataToSend.push({ id: id, qty_nego1: qty_nego1 });
+                dataToSend.push({ id: id, qty_nego1: qty_nego1, nego_id: $('#nego_id').val() });
             }
         }
     });
