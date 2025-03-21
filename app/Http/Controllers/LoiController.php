@@ -290,14 +290,20 @@ class LoiController extends Controller
             if (!$loiDetail) continue;
 
             // Pastikan qty2 tidak lebih besar dari qty_spph
-            if ($loiDetail->qty_spph < $item['qty_loi1']) {
+            if ($loiDetail->qty < $item['qty_loi1']) {
                 return response()->json(['error' => 'Qty tidak boleh lebih besar dari Qty1'], 400);
             }
 
-            // Update data
-            $loiDetail->qty_loi -= $item['qty_loi1'];
-            $loiDetail->qty_loi1 = $item['qty_loi1'];
-            $loiDetail->save();
+            // // Update data
+            // $loiDetail->qty_loi -= $item['qty_loi1'];
+            // $loiDetail->qty_loi1 = $item['qty_loi1'];
+            // $loiDetail->save();
+            $detailLoi = DetailLoi::create([
+                'loi_id' => $item['loi_id'],
+                'id_detail_pr' => $item['id'],
+                'loi_qty' => $item['qty_loi1'],
+                'id_del_loi' => 0,
+            ]);
         }
 
         return response()->json(['success' => true]);
@@ -606,6 +612,9 @@ class LoiController extends Controller
             $item->pr_no = PurchaseRequest::where('id', $item->id_pr)->first()->no_pr ?? '';
             $item->po_no = Purchase_Order::where('id', $item->id_po)->first()->no_po ?? '';
             $item->nama_pekerjaan = Kontrak::where('id', $item->id_proyek)->first()->nama_pekerjaan ?? '';
+           
+            // Baru, hitung sisa Nego by QTY asli - jumlah di DetailNego by id_pr_detail
+            $item->qty_loi = $item->qty - DetailLoi::where('id_detail_pr', $item->id)->sum('loi_qty');
             return $item;
         });
 
@@ -639,43 +648,43 @@ class LoiController extends Controller
             ]);
         }
 
-        foreach ($selected as $key => $value) {
-            $id_barang = $value;
-            // Temukan DetailPR berdasarkan ID
-            $detailPr = DetailPR::find($value);
+        // foreach ($selected as $key => $value) {
+        //     $id_barang = $value;
+        //     // Temukan DetailPR berdasarkan ID
+        //     $detailPr = DetailPR::find($value);
 
 
 
-            // Dapatkan nilai qty_loi1 dan id_del
-            $qty_loi1 = $detailPr->qty_loi1;
-            $id_del = $detailPr->id_del;
+        //     // Dapatkan nilai qty_loi1 dan id_del
+        //     $qty_loi1 = $detailPr->qty_loi1;
+        //     $id_del = $detailPr->id_del;
 
-            // Tambahkan data ke tabel Detailloi
-            $detailLoi = DetailLoi::create([
-                'loi_id' => $id,
-                'id_detail_pr' => $id_barang,
-                // Gunakan $value untuk id_detail_pr
-                'loi_qty' => $qty_loi1,  // Masukkan qty_loi1 ke kolom qty_spph
-                'id_del_loi' => $id_del,
-            ]);
+        //     // Tambahkan data ke tabel Detailloi
+        //     $detailLoi = DetailLoi::create([
+        //         'loi_id' => $id,
+        //         'id_detail_pr' => $id_barang,
+        //         // Gunakan $value untuk id_detail_pr
+        //         'loi_qty' => $qty_loi1,  // Masukkan qty_loi1 ke kolom qty_spph
+        //         'id_del_loi' => $id_del,
+        //     ]);
 
-            // Update status dan qty_loi1 pada DetailPR
-            $update = DetailPR::where('id', $value)->update([
-                'status' => 2,
-                'qty_loi1' => null,  // Set qty_loi1 menjadi null
-                'id_loi' => $id,
-            ]);
+        //     // Update status dan qty_loi1 pada DetailPR
+        //     $update = DetailPR::where('id', $value)->update([
+        //         'status' => 2,
+        //         'qty_loi1' => null,  // Set qty_loi1 menjadi null
+        //         'id_loi' => $id,
+        //     ]);
 
-            // Tambahkan id_loi jika qty_loi bernilai 0
-            if ($detailPr->qty_loi == 0) {
-                $updateData = [
-                    'id_loi' => $id
-                ];
+        //     // Tambahkan id_loi jika qty_loi bernilai 0
+        //     if ($detailPr->qty_loi == 0) {
+        //         $updateData = [
+        //             'id_loi' => $id
+        //         ];
 
-                // Lakukan update pada DetailPR
-                DetailPR::where('id', $value)->update($updateData);
-            }
-        }
+        //         // Lakukan update pada DetailPR
+        //         DetailPR::where('id', $value)->update($updateData);
+        //     }
+        // }
 
         // Cek jika Loi tidak ditemukan
         $loi = Loi::find($id);

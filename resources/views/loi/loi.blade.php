@@ -1067,15 +1067,30 @@
                 var qty_loi1 = $row.find('.qty_loi1-input').val();
                 var isChecked = $row.find('.row-checkbox').prop('checked'); // Cek checkbox
 
+                // if (isChecked) {
+                //     selectedRows++; // Hitung jumlah yang dicentang
+                //     if (qty_loi1 !== '' && !isNaN(qty_loi1)) { // Pastikan qty2 valid
+                //         dataToSend.push({
+                //             id: id,
+                //             qty_loi1: qty_loi1
+                //         });
+                //     }
+                // }
+
+
                 if (isChecked) {
                     selectedRows++; // Hitung jumlah yang dicentang
                     if (qty_loi1 !== '' && !isNaN(qty_loi1)) { // Pastikan qty2 valid
                         dataToSend.push({
                             id: id,
-                            qty_loi1: qty_loi1
+                            qty_loi1: qty_loi1,
+                            loi_id: $('#loi_id').val()
                         });
                     }
                 }
+
+
+
             });
 
             if (selectedRows === 0) { // Jika tidak ada checkbox yang dicentang
@@ -1287,7 +1302,7 @@
             $('#button-check').prop("disabled", true);
 
             $.ajax({
-                url: "{{ url('products/products_pr/') }}/" + id_pr,
+                url: "{{ url('products/products_pr_loi/') }}/" + id_pr,
                 type: "GET",
                 data: {
                     "format": "json"
